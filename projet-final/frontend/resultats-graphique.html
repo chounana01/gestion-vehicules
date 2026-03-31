@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultats Graphiques</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        canvas {
+            max-width: 600px;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Résultats Graphiques</h1>
+    <canvas id="resultChart"></canvas>
+    <script>
+        async function fetchResults() {
+            // Vérifiez si les données existent dans LocalStorage
+            const data = JSON.parse(localStorage.getItem("testData"));
+            if (!data) {
+                alert("Aucune donnée trouvée pour générer le graphique.");
+                return;
+            }
+
+            try {
+                // Envoyer une requête POST à l'API backend
+                const response = await fetch("http://localhost:5000/predict", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data),
+                });
+
+                if (!response.ok) {
+                    throw new Error("Erreur lors de la récupération des résultats.");
+                }
+
+                const result = await response.json();
+
+                // Vérifiez que les prédictions existent
+                if (!result.predictions) {
+                    alert("Aucune prédiction retournée par le serveur.");
+                    return;
+                }
+
+                // Créez un graphique avec Chart.js
+                const ctx = document.getElementById("resultChart").getContext("2d");
+                new Chart(ctx, {
+                    type: "bar",
+                    data: {
+                        labels: ["Prédiction"],
+                        datasets: [{
+                            label: "Prix (€)",
+                            data: [result.predictions],
+                            backgroundColor: "blue",
+                        }],
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                        },
+                    },
+                });
+            } catch (error) {
+                console.error("Erreur lors de la récupération des résultats :", error);
+                alert("Erreur lors de la génération du graphique. Consultez la console.");
+            }
+        }
+
+        fetchResults();
+    </script>
+</body>
+</html>

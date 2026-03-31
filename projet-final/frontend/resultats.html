@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultats de la Recherche</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .actions button {
+            background-color: #4CAF50;
+            border: none;
+            padding: 5px 10px;
+            color: white;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .actions button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Résultats de la Recherche</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Marque</th>
+                <th>Modèle</th>
+                <th>Année</th>
+                <th>Kilométrage</th>
+                <th>Prix</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="results-body">
+            <!-- Les résultats de la recherche seront insérés ici -->
+        </tbody>
+    </table>
+
+    <script>
+        const apiBaseUrl = "http://localhost:5000/vehicles";
+
+        async function fetchSearchResults() {
+            const params = new URLSearchParams(window.location.search);
+
+            try {
+                const response = await fetch(`${apiBaseUrl}/search?${params}`);
+                const vehicles = await response.json();
+
+                const resultsBody = document.getElementById("results-body");
+                resultsBody.innerHTML = "";
+
+                vehicles.forEach(vehicle => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${vehicle.marque}</td>
+                        <td>${vehicle.modèle}</td>
+                        <td>${vehicle.année}</td>
+                        <td>${vehicle.kilométrage}</td>
+                        <td>${vehicle.prix_de_vente} €</td>
+                        <td class="actions">
+                            <button onclick="redirectToUpdate('${vehicle._id}')">Modifier</button>
+                            <button onclick="deleteVehicle('${vehicle._id}')">Supprimer</button>
+                        </td>
+                    `;
+                    resultsBody.appendChild(row);
+                });
+
+                if (vehicles.length === 0) {
+                    resultsBody.innerHTML = '<tr><td colspan="6">Aucun véhicule trouvé.</td></tr>';
+                }
+            } catch (error) {
+                console.error("Erreur lors de la récupération des résultats :", error);
+            }
+        }
+
+        async function deleteVehicle(id) {
+            if (!confirm("Voulez-vous vraiment supprimer ce véhicule ?")) return;
+
+            try {
+                const response = await fetch(`${apiBaseUrl}/${id}`, { method: "DELETE" });
+                if (response.ok) {
+                    alert("Véhicule supprimé avec succès !");
+                    fetchSearchResults(); // Rafraîchit les résultats après suppression
+                } else {
+                    throw new Error("Erreur lors de la suppression.");
+                }
+            } catch (error) {
+                console.error("Erreur lors de la suppression :", error);
+            }
+        }
+
+        function redirectToUpdate(id) {
+            window.location.href = `modifier.html?id=${id}`;
+        }
+
+        // Charger les résultats au chargement de la page
+        fetchSearchResults();
+    </script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Véhicules</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Liste des Véhicules</h1>
+    <table id="vehicle-list">
+        <thead>
+            <tr>
+                <th>Marque</th>
+                <th>Modèle</th>
+                <th>Année</th>
+                <th>Kilométrage</th>
+                <th>Prix</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Les données seront injectées ici -->
+        </tbody>
+    </table>
+
+<script>const apiBaseUrl = "http://localhost:5000/vehicles";
+
+console.log("JS chargé");
+
+window.onload = async function () {
+    try {
+        console.log("appel API...");
+
+        const response = await fetch(apiBaseUrl);
+        const vehicles = await response.json();
+
+        console.log("DATA:", vehicles);
+
+        const tableBody = document.querySelector("#vehicle-list tbody");
+
+        if (!tableBody) {
+            console.error("❌ tbody introuvable");
+            return;
+        }
+
+        tableBody.innerHTML = "";
+
+        vehicles.forEach(vehicle => {
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${vehicle.marque}</td>
+                <td>${vehicle.modèle}</td>
+                <td>${vehicle.année}</td>
+                <td>${vehicle.kilométrage}</td>
+                <td>${vehicle.prix_de_vente}</td>
+            `;
+
+            tableBody.appendChild(row);
+        });
+
+        console.log("✅ tableau rempli");
+
+    } catch (error) {
+        console.error("❌ ERREUR:", error);
+    }
+};
+</script>
+</body>
+</html>

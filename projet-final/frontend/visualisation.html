@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisation des Données</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .chart-container {
+            max-width: 800px;
+            margin: auto;
+            margin-bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Visualisation des Données</h1>
+
+    <div class="chart-container">
+        <h2>Kilométrage Moyen par Année</h2>
+        <canvas id="chart1"></canvas>
+    </div>
+
+    <div class="chart-container">
+        <h2>Répartition des Prix par Année</h2>
+        <canvas id="chart2"></canvas>
+    </div>
+
+    <div class="chart-container">
+        <h2>Répartition des Transmissions</h2>
+        <canvas id="chart3"></canvas>
+    </div>
+
+    <script>
+const apiBaseUrl = "http://localhost:5000/vehicles/visualisation";
+
+async function fetchVisualizationData() {
+    try {
+        const response = await fetch(apiBaseUrl);
+        const data = await response.json();
+
+        // Graphique 1 : Kilométrage Moyen par Année
+        const chart1Ctx = document.getElementById("chart1").getContext("2d");
+        new Chart(chart1Ctx, {
+            type: "bar",
+            data: {
+                labels: data.kmAnnee.map(item => item._id), // Années
+                datasets: [{
+                    label: "Kilométrage Moyen",
+                    data: data.kmAnnee.map(item => item.avgKm),
+                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                    borderColor: "rgba(75, 192, 192, 1)",
+                }]
+            }
+        });
+
+        // Graphique 2 : Répartition des Prix par Année
+        const chart2Ctx = document.getElementById("chart2").getContext("2d");
+        new Chart(chart2Ctx, {
+            type: "line",
+            data: {
+                labels: data.prixParAnnee.map(item => item._id), // Années
+                datasets: [{
+                    label: "Prix Moyen",
+                    data: data.prixParAnnee.map(item => {
+                        const total = item.prices.reduce((acc, price) => acc + price, 0);
+                        return total / item.prices.length;
+                    }),
+                    backgroundColor: "rgba(153, 102, 255, 0.2)",
+                    borderColor: "rgba(153, 102, 255, 1)",
+                }]
+            }
+        });
+
+        // Graphique 3 : Répartition des Transmissions
+        const chart3Ctx = document.getElementById("chart3").getContext("2d");
+        new Chart(chart3Ctx, {
+            type: "pie",
+            data: {
+                labels: data.transmission.map(item => item._id), // Types de transmission
+                datasets: [{
+                    label: "Répartition des Transmissions",
+                    data: data.transmission.map(item => item.count),
+                    backgroundColor: ["rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)"],
+                    borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"],
+                }]
+            }
+        });
+
+    } catch (error) {
+        console.error("Erreur lors de la récupération des données :", error);
+    }
+}
+
+// Charger les données pour les graphiques au chargement de la page
+fetchVisualizationData();
+
+    </script>
+    <div style="text-align: center; margin-top: 20px;">
+        <button onclick="location.href='index.html'" style="
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        ">
+            Retour au Menu Principal
+        </button>
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Véhicules</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 0;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        .container {
+            max-width: 1200px;
+            width: 90%;
+            margin: 40px auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .section {
+            text-align: center;
+            width: 200px;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .section:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .section h2 {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        footer {
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #555;
+            text-align: center;
+            width: 100%;
+            padding: 10px 0;
+            background-color: #f4f4f9;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Gestion des Véhicules</h1>
+    </header>
+    <div class="container">
+        <div class="section">
+            <h2>Rechercher un Véhicule</h2>
+            <a href="recherche.html" class="button">Rechercher</a>
+        </div>
+        <div class="section">
+            <h2>Nos Véhicules</h2>
+            <a href="nos-vehicules.html" class="button">Voir la Liste</a>
+        </div>
+        <div class="section">
+            <h2>Ajouter un Véhicule</h2>
+            <a href="ajouter.html" class="button">Ajouter</a>
+        </div>
+        <div class="section">
+            <h2>Visualisation</h2>
+            <a href="visualisation.html" class="button">Voir les Graphiques</a>
+        </div>
+        <div class="section">
+            <h2>Tester un Algorithme</h2>
+            <a href="test-algorithme.html" class="button">Lancer un Test</a>
+        </div>
+
+    <footer>
+        © 2024 Gestion des Véhicules. Tous droits réservés.
+    </footer>
+</body>
+</html>

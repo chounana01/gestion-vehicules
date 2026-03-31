@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test des Algorithmes</title>
+    <style>
+        /* Styles CSS */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        form {
+            margin: 20px 0;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input, select, button {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 400px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .form-section {
+            display: none; /* Masquer les sections par défaut */
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+        canvas {
+            margin: 20px auto;
+            display: block;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test des Algorithmes</h1>
+
+    <!-- Sélecteur d'algorithme -->
+    <label for="algorithm">Choisissez un Algorithme :</label>
+    <select id="algorithm">
+        <option value="">-- Sélectionnez --</option>
+        <option value="regression">Régression Linéaire</option>
+        <option value="knn">KNN</option>
+        <option value="decision-tree">Arbre de Décision</option>
+    </select>
+
+    <!-- Formulaire pour Régression Linéaire -->
+    <div id="regression-form" class="form-section">
+        <h2>Prédiction du Prix</h2>
+        <form id="regressionForm">
+            <label for="marque">Marque :</label>
+            <input type="text" id="marque" name="marque" required>
+            <label for="modele">Modèle :</label>
+            <input type="text" id="modele" name="modele" required>
+            <label for="annee">Année :</label>
+            <input type="number" id="annee" name="annee" required>
+            <button type="submit">Prédire</button>
+            <p id="regression-error" class="error"></p>
+        </form>
+        <div id="regression-result"></div>
+    </div>
+
+    <!-- Formulaire pour KNN -->
+    <div id="knn-form" class="form-section">
+        <h2>Classification Économique vs Luxueux</h2>
+        <form id="knnForm">
+            <label for="modele">Modèle :</label>
+            <input type="text" id="knn-modele" name="modele" required>
+            <label for="prix">Prix :</label>
+            <input type="number" id="knn-prix" name="prix" required>
+            <button type="submit">Classer</button>
+            <p id="knn-error" class="error"></p>
+        </form>
+        <div id="knn-result"></div>
+    </div>
+
+    <!-- Formulaire pour Arbre de Décision -->
+    <div id="decision-tree-form" class="form-section">
+        <h2>Prédiction du Type de Carrosserie</h2>
+        <form id="decisionTreeForm">
+            <label for="marque">Marque :</label>
+            <input type="text" id="tree-marque" name="marque" required>
+            <label for="modele">Modèle :</label>
+            <input type="text" id="tree-modele" name="modele" required>
+            <button type="submit">Prédire</button>
+            <p id="decision-tree-error" class="error"></p>
+        </form>
+        <div id="tree-result"></div>
+    </div>
+
+    <script>
+        const algorithmSelector = document.getElementById("algorithm");
+        const formSections = document.querySelectorAll(".form-section");
+
+        algorithmSelector.addEventListener("change", () => {
+            formSections.forEach(section => section.style.display = "none");
+            const selectedAlgorithm = algorithmSelector.value;
+            if (selectedAlgorithm) {
+                document.getElementById(`${selectedAlgorithm}-form`).style.display = "block";
+            }
+        });
+    
+
+
+        async function handleSubmit(url, data, resultId, errorId) {
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+                if (!response.ok) throw new Error("Erreur lors de la requête");
+                const result = await response.json();
+                document.getElementById(resultId).textContent = `Prédiction : ${result.prediction}`;
+            } catch (error) {
+                document.getElementById(errorId).textContent = error.message;
+            }
+        }
+
+        document.getElementById("regressionForm").addEventListener("submit", (event) => {
+            event.preventDefault();
+            const data = {
+                marque: document.getElementById("marque").value,
+                modele: document.getElementById("modele").value,
+                annee: parseInt(document.getElementById("annee").value),
+            };
+            handleSubmit('/api/regression-lineaire', data, "regression-result", "regression-error");
+        });
+
+        document.getElementById("knnForm").addEventListener("submit", (event) => {
+            event.preventDefault();
+            const data = {
+                modele: document.getElementById("knn-modele").value,
+                prix: parseInt(document.getElementById("knn-prix").value),
+            };
+            handleSubmit('/api/knn', data, "knn-result", "knn-error");
+        });
+
+        document.getElementById("decisionTreeForm").addEventListener("submit", (event) => {
+            event.preventDefault();
+            const data = {
+                marque: document.getElementById("tree-marque").value,
+                modele: document.getElementById("tree-modele").value,
+            };
+            handleSubmit('/api/arbre-decision', data, "tree-result", "decision-tree-error");
+        });
+    </script>
+</body>
+</html>
