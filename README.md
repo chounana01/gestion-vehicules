@@ -24,14 +24,7 @@ Application web full stack permettant de gérer, visualiser et analyser des véh
 - 🤖 Prédiction du prix avec des algorithmes
 
 ---
-## 🚀 Lancer le projet
 
-### Backend
-```bash
-npm install
-node server.js
-python app.py
----
 
 ## 📸 Aperçu
 
