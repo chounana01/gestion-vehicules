@@ -31,6 +31,7 @@ Application web full stack permettant de gérer, visualiser et analyser des véh
 npm install
 node server.js
 python app.py
+---
 
 ## 📸 Aperçu
 
