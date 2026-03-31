@@ -13,6 +13,7 @@ Application web full stack permettant de gérer, visualiser et analyser des véh
 
 ---
 
+
 ## ⚙️ Fonctionnalités
 
 - 📋 Affichage dynamique des véhicules depuis MongoDB
@@ -23,14 +24,23 @@ Application web full stack permettant de gérer, visualiser et analyser des véh
 - 🤖 Prédiction du prix avec des algorithmes
 
 ---
+## 🚀 Lancer le projet
+
+### Backend
+```bash
+npm install
+node server.js
+python app.py
 
 ## 📸 Aperçu
 
 ### 📋 Liste des véhicules
-![Liste](./screenshots/liste.png)
+<img width="2879" height="1347" alt="image" src="https://github.com/user-attachments/assets/ba3293f3-67fc-4b66-b145-51a8d94059b8" />
+
 
 ### 📊 Graphiques
-![Graphiques](./screenshots/graph.png)
+<img width="1970" height="1056" alt="image" src="https://github.com/user-attachments/assets/8372e11e-a7a3-48f6-abde-a6a009c681a6" />
+
 
 ---
 
