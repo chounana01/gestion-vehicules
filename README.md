@@ -38,8 +38,15 @@ Application web full stack permettant de gérer, visualiser et analyser des véh
 
 ---
 
-## 🚀 Installation
+## ▶️ Lancer le Backend
 
+```bash
+cd backend
+npm install
+node server.js
+cd backend
+python app.py 
+--
 ### 1️⃣ Cloner le projet
 
 ```bash
